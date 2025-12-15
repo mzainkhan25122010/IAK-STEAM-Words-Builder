@@ -1,0 +1,3951 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAK STEAM Words Builder - Word Building Game</title>
+    <link rel="icon" type="image/png" href="./logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ====== CSS RESET & VARIABLES ====== */
+        :root {
+            --primary-color: #4a6fa5;
+            --primary-light: #6b8cbc;
+            --secondary-color: #166088;
+            --accent-color: #32CD32;
+            --error-color: #ff4757;
+            --warning-color: #ffa502;
+            --light-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --text-light: #777;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+            --radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ====== PAGE CONTAINER ====== */
+        .page-container {
+            display: none;
+            min-height: 100vh;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .page-container.active {
+            display: block;
+        }
+
+        /* ====== COMMON COMPONENTS ====== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            min-height: calc(100vh - 20px);
+            position: relative;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .tagline {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 3px;
+            padding: 0 10px;
+        }
+
+        /* Admin button in header */
+        .admin-header-btn {
+            position: static;
+            margin-top: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .admin-header-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* ====== BUTTONS ====== */
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 14px 20px;
+            border-radius: 10px;
+            transition: var(--transition);
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-success {
+            background-color: var(--accent-color);
+        }
+
+        .btn-success:hover {
+            background-color: #28a428;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+
+        .btn-error {
+            background-color: var(--error-color);
+        }
+
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: var(--text-color);
+            border: 2px solid transparent;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+            border-color: var(--border-color);
+        }
+
+        /* Enhanced action buttons */
+        .action-btn {
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 2px solid transparent;
+            width: 100%;
+        }
+
+        .action-btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 4px 8px rgba(74, 111, 165, 0.2);
+        }
+
+        .action-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(74, 111, 165, 0.3);
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary-color));
+        }
+
+        .action-btn-secondary {
+            background-color: white;
+            color: var(--text-color);
+            border: 2px solid var(--border-color);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .action-btn-secondary:hover {
+            background-color: #f8f9fa;
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn-accent {
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: white;
+            box-shadow: 0 4px 8px rgba(255, 126, 95, 0.2);
+        }
+
+        .action-btn-accent:hover {
+            background: linear-gradient(135deg, #ff9a8b, #ffcc9e);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(255, 126, 95, 0.3);
+        }
+
+        /* ====== WELCOME PAGE ====== */
+        .welcome-content {
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        .welcome-content h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .welcome-content p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-size: 16px;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 10px;
+        }
+
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature {
+            width: 100%;
+            background-color: #f9fbff;
+            border-radius: 12px;
+            padding: 20px 15px;
+            border: 2px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature i {
+            font-size: 30px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .feature h3 {
+            color: var(--text-color);
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .feature p {
+            color: var(--text-light);
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        /* ====== USERNAME PAGE ====== */
+        .username-content {
+            padding: 25px 20px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 16px;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: var(--transition);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.1);
+        }
+
+        .username-rules {
+            background-color: #f9fbff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .username-rules h4 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .username-rules ul {
+            padding-left: 20px;
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        .username-rules li {
+            margin-bottom: 4px;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        /* ====== LEVEL SELECTION PAGE ====== */
+        .level-content {
+            padding: 25px 20px;
+        }
+
+        /* ENHANCED USER INFO SECTION */
+        .user-info {
+            background: linear-gradient(135deg, #f9fbff 0%, #f0f5ff 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 2px solid #e6ecff;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .user-welcome {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(74, 111, 165, 0.3);
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-details h2 {
+            font-size: 18px;
+            color: var(--text-color);
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-details p {
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        .username-display {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ENHANCED USER ACTIONS */
+        .user-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .user-action-btn {
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            border: 2px solid transparent;
+        }
+
+        .user-action-btn-change {
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: white;
+            box-shadow: 0 3px 8px rgba(255, 126, 95, 0.2);
+        }
+
+        .user-action-btn-change:hover {
+            background: linear-gradient(135deg, #ff9a8b, #ffcc9e);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(255, 126, 95, 0.3);
+        }
+
+        .user-action-btn-back {
+            background-color: white;
+            color: var(--text-color);
+            border: 2px solid var(--border-color);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .user-action-btn-back:hover {
+            background-color: #f8f9fa;
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-action-btn i {
+            font-size: 14px;
+        }
+
+        /* Username change animation */
+        @keyframes usernamePulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .username-pulse {
+            animation: usernamePulse 0.5s ease;
+        }
+
+        .instructions {
+            background-color: #f9fbff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .instructions h3 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .instructions p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .levels-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .level-card {
+            background-color: #f9fbff;
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .level-card.normal:hover {
+            border-color: #1890ff;
+        }
+
+        .level-card.medium:hover {
+            border-color: #fa8c16;
+        }
+
+        .level-card.difficult:hover {
+            border-color: #f5222d;
+        }
+
+        .level-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .level-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .level-icon.normal {
+            background-color: #1890ff;
+        }
+
+        .level-icon.medium {
+            background-color: #fa8c16;
+        }
+
+        .level-icon.difficult {
+            background-color: #f5222d;
+        }
+
+        .level-title {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .level-title h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .level-title p {
+            color: var(--text-light);
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .level-description {
+            margin-bottom: 20px;
+            color: var(--text-color);
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .timing-options {
+            margin-bottom: 20px;
+        }
+
+        .timing-options h4 {
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: var(--text-color);
+        }
+
+        .time-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .time-btn {
+            flex: 1;
+            min-width: 60px;
+            padding: 10px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background-color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .time-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .time-btn.active {
+            border-color: var(--primary-color);
+            background-color: rgba(74, 111, 165, 0.1);
+            color: var(--primary-color);
+        }
+
+        .select-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 10px;
+            transition: var(--transition);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .select-btn:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .select-btn.normal:hover {
+            background-color: #40a9ff;
+        }
+
+        .select-btn.medium:hover {
+            background-color: #ffa940;
+        }
+
+        .select-btn.difficult:hover {
+            background-color: #ff4d4f;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        /* ====== GAME PAGE ====== */
+        .game-main {
+            display: flex;
+            flex-direction: column;
+            min-height: 70vh;
+        }
+
+        .sidebar {
+            width: 100%;
+            background-color: #f0f5ff;
+            padding: 20px 15px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .game-area {
+            flex: 1;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-header {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            text-align: center;
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .info-value {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .info-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .level-info {
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .level-info span {
+            color: var(--primary-color);
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            min-width: 70px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+
+        .timer {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--secondary-color);
+            background-color: #f0f7ff;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .timer.warning {
+            color: var(--warning-color);
+        }
+
+        .timer.danger {
+            color: var(--error-color);
+        }
+
+        /* Circular Letter Layout - Mobile Optimized */
+        .letter-circle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            min-height: 250px;
+            padding: 10px;
+        }
+
+        .letter-circle {
+            position: relative;
+            width: 250px;
+            height: 250px;
+        }
+
+        .letter-btn {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: white;
+            border: 3px solid var(--primary-color);
+            color: var(--primary-color);
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .letter-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .letter-btn:active {
+            transform: scale(0.95);
+        }
+
+        .letter-btn.used {
+            opacity: 0.5;
+            background-color: #f0f0f0;
+            border-color: #ccc;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        /* Word Building Area */
+        .word-building-area {
+            background-color: #f9fbff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid var(--border-color);
+            min-height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .current-word {
+            font-size: 24px;
+            letter-spacing: 4px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-color);
+            min-height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            word-break: break-all;
+            padding: 0 10px;
+        }
+
+        .word-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .word-actions button {
+            width: 100%;
+        }
+
+        /* Submitted Words */
+        .submitted-words {
+            background-color: #f9fbff;
+            border-radius: 12px;
+            padding: 20px;
+            flex: 1;
+            border: 2px solid var(--border-color);
+            margin-top: 10px;
+        }
+
+        .submitted-words h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-items: flex-start;
+        }
+
+        .words-list {
+            max-height: 150px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .word-item {
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            background-color: white;
+            border-left: 4px solid #ccc;
+            animation: fadeIn 0.5s ease;
+            font-size: 14px;
+        }
+
+        .word-item.valid {
+            border-left-color: var(--accent-color);
+            background-color: rgba(50, 205, 50, 0.1);
+        }
+
+        .word-item.invalid {
+            border-left-color: var(--error-color);
+            background-color: rgba(255, 71, 87, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 20px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .sidebar-btn {
+            background-color: white;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+            text-decoration: none;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .sidebar-btn:hover {
+            border-color: var(--primary-color);
+            background-color: #f9fbff;
+            transform: translateY(-2px);
+        }
+
+        .game-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        /* Level badges */
+        .level-badge {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        .level-normal {
+            background-color: #e6f7ff;
+            color: #1890ff;
+        }
+
+        .level-medium {
+            background-color: #fff7e6;
+            color: #fa8c16;
+        }
+
+        .level-difficult {
+            background-color: #fff1f0;
+            color: #f5222d;
+        }
+
+        /* ====== INSTRUCTIONS PAGE ====== */
+        .instructions-content {
+            padding: 25px 20px;
+        }
+
+        .instructions-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .instruction-section {
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .instruction-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .section-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #f0f5ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--primary-color);
+        }
+
+        .section-title {
+            flex: 1;
+            width: 100%;
+        }
+
+        .section-title h2 {
+            color: var(--primary-color);
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .instruction-content {
+            padding-left: 0;
+        }
+
+        .instruction-content p {
+            margin-bottom: 12px;
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        .instruction-content ul,
+        .instruction-content ol {
+            margin-bottom: 12px;
+            padding-left: 20px;
+            font-size: 14px;
+        }
+
+        .instruction-content li {
+            margin-bottom: 6px;
+            color: var(--text-color);
+        }
+
+        .difficulty-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .difficulty-card {
+            width: 100%;
+            background-color: #f9fbff;
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+        }
+
+        .difficulty-card h4 {
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+
+        .difficulty-card ul {
+            padding-left: 20px;
+            font-size: 13px;
+        }
+
+        .difficulty-card li {
+            margin-bottom: 4px;
+        }
+
+        .keyboard-shortcuts {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .shortcut-item {
+            background-color: #f9fbff;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .shortcut-key {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            min-width: 50px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .shortcut-description {
+            flex: 1;
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        /* ====== RESULTS PAGE ====== */
+        .results-content {
+            padding: 25px 20px;
+        }
+
+        .results-summary {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .final-score {
+            font-size: 50px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .performance-message {
+            font-size: 18px;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: #f9fbff;
+            border-radius: 12px;
+            padding: 20px 15px;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin: 0 auto 10px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .accuracy-container {
+            margin-bottom: 30px;
+        }
+
+        .accuracy-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .accuracy-title {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 15px;
+        }
+
+        .accuracy-percent {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 15px;
+        }
+
+        .accuracy-bar {
+            height: 16px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .accuracy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), #5cd65c);
+            border-radius: 8px;
+            transition: width 1s ease;
+        }
+
+        .level-info {
+            background-color: #f9fbff;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .level-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .level-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .level-detail {
+            width: 100%;
+        }
+
+        .detail-label {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-color);
+            word-break: break-word;
+        }
+
+        /* ====== ADMIN PAGE ====== */
+        .admin-content {
+            padding: 25px 20px;
+        }
+
+        .admin-login {
+            max-width: 100%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .login-form {
+            background-color: #f9fbff;
+            border-radius: 12px;
+            padding: 25px 20px;
+            margin: 25px 0;
+            border: 2px solid var(--border-color);
+        }
+
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            background-color: #f9fbff;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid var(--border-color);
+        }
+
+        .data-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .data-controls .btn {
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 10px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+        }
+
+        tr:hover {
+            background-color: #f9fbff;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* ====== RESPONSIVE DESIGN ====== */
+        /* Small Mobile Phones (up to 360px) */
+        @media (max-width: 360px) {
+            .logo h1 {
+                font-size: 20px;
+            }
+
+            .logo i {
+                font-size: 24px;
+            }
+
+            .letter-circle {
+                width: 220px;
+                height: 220px;
+            }
+
+            .letter-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+
+            .current-word {
+                font-size: 20px;
+                letter-spacing: 3px;
+            }
+
+            .final-score {
+                font-size: 42px;
+            }
+        }
+
+        /* Mobile Phones (361px to 480px) */
+        @media (min-width: 361px) and (max-width: 480px) {
+            .logo h1 {
+                font-size: 22px;
+            }
+
+            .letter-circle {
+                width: 230px;
+                height: 230px;
+            }
+
+            .current-word {
+                font-size: 22px;
+            }
+        }
+
+        /* Tablets and Small Laptops (481px to 768px) */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .page-container {
+                padding: 15px;
+            }
+
+            .container {
+                min-height: calc(100vh - 30px);
+            }
+
+            header {
+                padding: 20px 25px;
+            }
+
+            .logo {
+                gap: 15px;
+            }
+
+            .logo i {
+                font-size: 32px;
+            }
+
+            .logo h1 {
+                font-size: 28px;
+            }
+
+            .tagline {
+                font-size: 16px;
+            }
+
+            .features {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .feature {
+                flex: 1;
+                min-width: 200px;
+            }
+
+            .levels-container {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .level-card:last-child:nth-child(odd) {
+                grid-column: 1 / -1;
+            }
+
+            .user-info {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .user-actions {
+                flex-direction: row;
+                width: auto;
+            }
+
+            .user-action-btn {
+                min-width: 140px;
+            }
+
+            .word-actions {
+                flex-direction: row;
+            }
+
+            .word-actions button {
+                flex: 1;
+            }
+
+            .action-buttons {
+                flex-direction: row;
+            }
+
+            .action-btn {
+                min-width: 150px;
+            }
+
+            .instructions-nav {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .keyboard-shortcuts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .difficulty-cards {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .difficulty-card {
+                flex: 1;
+                min-width: 200px;
+            }
+
+            .level-details {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .data-controls {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .data-controls .btn {
+                flex: 1;
+                min-width: 150px;
+            }
+        }
+
+        /* Medium Screens (769px to 992px) */
+        @media (min-width: 769px) and (max-width: 992px) {
+            .page-container {
+                padding: 20px;
+            }
+
+            .welcome-content,
+            .username-content,
+            .level-content,
+            .instructions-content,
+            .results-content,
+            .admin-content {
+                padding: 35px 30px;
+            }
+
+            .features {
+                flex-direction: row;
+            }
+
+            .feature {
+                flex: 1;
+            }
+
+            .levels-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .game-main {
+                flex-direction: row;
+            }
+
+            .sidebar {
+                width: 220px;
+                border-right: 1px solid var(--border-color);
+                border-bottom: none;
+            }
+
+            .letter-circle {
+                width: 280px;
+                height: 280px;
+            }
+
+            .letter-btn {
+                width: 55px;
+                height: 55px;
+                font-size: 22px;
+            }
+
+            .current-word {
+                font-size: 28px;
+                letter-spacing: 6px;
+            }
+
+            .instructions-nav {
+                flex-direction: row;
+            }
+
+            .instruction-section {
+                margin-bottom: 35px;
+            }
+
+            .section-header {
+                flex-direction: row;
+            }
+
+            .instruction-content {
+                padding-left: 65px;
+            }
+
+            .difficulty-cards {
+                flex-direction: row;
+            }
+
+            .keyboard-shortcuts {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .level-details {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .stats-summary {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .data-controls {
+                flex-direction: row;
+            }
+        }
+
+        /* Large Screens (993px and above) */
+        @media (min-width: 993px) {
+            .page-container {
+                padding: 20px;
+            }
+
+            .welcome-content,
+            .username-content,
+            .level-content,
+            .instructions-content,
+            .results-content,
+            .admin-content {
+                padding: 40px;
+            }
+
+            .features {
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            .feature {
+                max-width: 250px;
+            }
+
+            .levels-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .user-info {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .user-actions {
+                flex-direction: row;
+                width: auto;
+            }
+
+            .user-action-btn {
+                min-width: 160px;
+            }
+
+            .game-main {
+                flex-direction: row;
+            }
+
+            .sidebar {
+                width: 250px;
+                border-right: 1px solid var(--border-color);
+                border-bottom: none;
+            }
+
+            .letter-circle {
+                width: 300px;
+                height: 300px;
+            }
+
+            .letter-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+
+            .current-word {
+                font-size: 32px;
+                letter-spacing: 8px;
+            }
+
+            .word-actions {
+                flex-direction: row;
+            }
+
+            .word-actions button {
+                flex: 1;
+            }
+
+            .action-buttons {
+                flex-direction: row;
+            }
+
+            .action-btn {
+                min-width: 180px;
+            }
+
+            .instructions-nav {
+                flex-direction: row;
+            }
+
+            .instruction-section {
+                margin-bottom: 40px;
+            }
+
+            .section-header {
+                flex-direction: row;
+            }
+
+            .instruction-content {
+                padding-left: 65px;
+            }
+
+            .difficulty-cards {
+                flex-direction: row;
+            }
+
+            .keyboard-shortcuts {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .level-details {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .stats-summary {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .data-controls {
+                flex-direction: row;
+            }
+
+            .admin-header-btn {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                margin-top: 0;
+            }
+        }
+
+        /* Touch Device Optimizations */
+        @media (hover: none) and (pointer: coarse) {
+
+            .btn:hover,
+            .action-btn:hover,
+            .sidebar-btn:hover,
+            .user-action-btn:hover,
+            .letter-btn:hover,
+            .time-btn:hover,
+            .select-btn:hover,
+            .feature:hover,
+            .stat-card:hover,
+            .level-card:hover {
+                transform: none;
+            }
+
+            .btn:active,
+            .action-btn:active,
+            .sidebar-btn:active,
+            .user-action-btn:active,
+            .letter-btn:active,
+            .time-btn:active,
+            .select-btn:active {
+                transform: scale(0.95);
+            }
+
+            .letter-btn {
+                cursor: pointer;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+            }
+
+            .letter-btn:active {
+                background-color: var(--primary-color);
+                color: white;
+            }
+        }
+
+        /* Landscape Mode for Mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .page-container {
+                padding: 5px;
+            }
+
+            .container {
+                min-height: auto;
+            }
+
+            header {
+                padding: 10px 15px;
+            }
+
+            .welcome-content,
+            .username-content,
+            .level-content,
+            .instructions-content,
+            .results-content,
+            .admin-content {
+                padding: 15px;
+            }
+
+            .game-main {
+                min-height: 60vh;
+            }
+
+            .letter-circle-container {
+                min-height: 200px;
+                margin: 10px 0;
+            }
+
+            .letter-circle {
+                width: 200px;
+                height: 200px;
+            }
+
+            .letter-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            .word-building-area {
+                min-height: 70px;
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .current-word {
+                font-size: 20px;
+                min-height: 30px;
+            }
+
+            .submitted-words {
+                padding: 15px;
+            }
+
+            .words-list {
+                max-height: 100px;
+            }
+        }
+
+        /* High DPI Screens */
+        @media (-webkit-min-device-pixel-ratio: 2),
+        (min-resolution: 192dpi) {
+
+            .letter-btn,
+            .btn,
+            .action-btn,
+            .sidebar-btn {
+                border-width: 2px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .page-container {
+                display: none;
+                padding: 0;
+            }
+
+            .page-container.active {
+                display: block;
+            }
+
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .btn,
+            .action-btn,
+            .sidebar-btn,
+            .user-action-btn,
+            .time-btn,
+            .select-btn,
+            .admin-header-btn {
+                display: none;
+            }
+
+            header {
+                background: white !important;
+                color: black !important;
+            }
+
+            .tagline {
+                color: #666;
+            }
+        }
+
+        /* ====== ANIMATIONS ====== */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse {
+            animation: pulse 0.5s ease;
+        }
+
+        /* ====== UTILITY CLASSES ====== */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Prevent text selection on interactive elements */
+        .btn,
+        .action-btn,
+        .sidebar-btn,
+        .user-action-btn,
+        .letter-btn,
+        .time-btn,
+        .select-btn {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /* Improve scrolling on mobile */
+        .words-list,
+        #users-table-body {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Ensure proper spacing for mobile keyboards */
+        @media (max-width: 768px) {
+            input {
+                font-size: 16px;
+                /* Prevents iOS zoom on focus */
+            }
+        }
+
+        /* Loading animation for game */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ====== PAGE 1: WELCOME PAGE ====== -->
+    <div id="welcome-page" class="page-container active">
+        <div class="container">
+            <header>
+                <div class="logo">
+                    <i class="fas fa-spell-check"></i>
+                    <h1>IAK STEAM Words Builder</h1>
+                </div>
+                <p class="tagline">Build words, enhance vocabulary, and challenge your mind!</p>
+                <button class="admin-header-btn" onclick="showPage('admin-page')">
+                    <i class="fas fa-user-cog"></i> Admin Panel
+                </button>
+            </header>
+
+            <div class="welcome-content">
+                <h2>Welcome to the Ultimate Word Building Game</h2>
+                <p>Create valid English words by selecting letters in a circular layout. Test your vocabulary, speed,
+                    and accuracy across three difficulty levels with customizable timing options.</p>
+
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-brain"></i>
+                        <h3>Enhance Vocabulary</h3>
+                        <p>Expand your word knowledge with carefully curated letter sets</p>
+                    </div>
+
+                    <div class="feature">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <h3>Test Your Speed</h3>
+                        <p>Challenge yourself with time limits from 30 to 90 seconds</p>
+                    </div>
+
+                    <div class="feature">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Track Progress</h3>
+                        <p>Monitor your performance with detailed statistics</p>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="action-btn action-btn-primary" id="start-playing-btn">
+                        <i class="fas fa-play"></i> Start Playing
+                    </button>
+                </div>
+
+                <footer>
+                    <p>© 2023 Create the Words. All rights reserved.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== PAGE 2: USERNAME PAGE ====== -->
+    <div id="username-page" class="page-container">
+        <div class="container">
+            <header>
+                <div class="logo">
+                    <i class="fas fa-spell-check"></i>
+                    <h1>IAK STEAM Words Builder</h1>
+                </div>
+                <p class="tagline">Enter your username to begin</p>
+                <button class="admin-header-btn" onclick="showPage('admin-page')">
+                    <i class="fas fa-user-cog"></i> Admin Panel
+                </button>
+            </header>
+
+            <div class="username-content">
+                <div class="username-rules">
+                    <h4>Username Guidelines:</h4>
+                    <ul>
+                        <li>3-20 characters in length</li>
+                        <li>Can include letters, numbers, and underscores</li>
+                        <li>No special characters or spaces</li>
+                        <li>Your username will be visible on leaderboards</li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Choose Your Username</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username" placeholder="Enter your username" maxlength="20">
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="action-btn action-btn-primary" id="continue-btn">
+                        <i class="fas fa-arrow-right"></i> Continue to Level Selection
+                    </button>
+
+                    <button class="action-btn action-btn-secondary" id="back-welcome-btn">
+                        <i class="fas fa-arrow-left"></i> Back to Home
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== PAGE 3: LEVEL SELECTION PAGE ====== -->
+    <div id="level-page" class="page-container">
+        <div class="container">
+            <header>
+                <div class="logo">
+                    <i class="fas fa-spell-check"></i>
+                    <h1>IAK STEAM Words Builder</h1>
+                </div>
+                <p class="tagline">Select your difficulty level and time limit</p>
+                <button class="admin-header-btn" onclick="showPage('admin-page')">
+                    <i class="fas fa-user-cog"></i> Admin Panel
+                </button>
+            </header>
+
+            <div class="level-content">
+                <!-- ENHANCED USER INFO SECTION -->
+                <div class="user-info">
+                    <div class="user-welcome">
+                        <div class="user-avatar" id="user-avatar">
+                            <!-- Avatar will be generated from username -->
+                        </div>
+                        <div class="user-details">
+                            <h2>Welcome back,</h2>
+                            <div class="username-display" id="username-display">Player</div>
+                            <p>Ready to challenge your vocabulary skills?</p>
+                        </div>
+                    </div>
+
+                    <div class="user-actions">
+                        <button class="user-action-btn user-action-btn-change" id="change-username-btn">
+                            <i class="fas fa-user-edit"></i> Change Username
+                        </button>
+                        <button class="user-action-btn user-action-btn-back" id="back-username-btn">
+                            <i class="fas fa-arrow-left"></i> Back to Login
+                        </button>
+                    </div>
+                </div>
+
+                <div class="instructions">
+                    <h3>How to Choose:</h3>
+                    <p>Select a difficulty level based on your skill, then choose how much time you want per question.
+                        More difficult levels have more challenging letter combinations. You can select different time
+                        limits for each level.</p>
+                </div>
+
+                <div class="levels-container">
+                    <!-- Normal Level Card -->
+                    <div class="level-card normal">
+                        <div class="level-header">
+                            <div class="level-icon normal">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <div class="level-title">
+                                <h3>Normal</h3>
+                                <p>Common letters, easier words</p>
+                            </div>
+                        </div>
+
+                        <div class="level-description">
+                            <p>Perfect for beginners or casual play. Letter sets include common vowels and consonants
+                                that form many familiar English words.</p>
+                        </div>
+
+                        <div class="timing-options">
+                            <h4>Select Time per Question:</h4>
+                            <div class="time-buttons" data-level="normal">
+                                <button class="time-btn" data-time="30">30s</button>
+                                <button class="time-btn" data-time="60">60s</button>
+                                <button class="time-btn active" data-time="90">90s</button>
+                            </div>
+                        </div>
+
+                        <button class="action-btn action-btn-primary" data-level="normal">
+                            <i class="fas fa-play"></i> Play Normal Level
+                        </button>
+                    </div>
+
+                    <!-- Medium Level Card -->
+                    <div class="level-card medium">
+                        <div class="level-header">
+                            <div class="level-icon medium">
+                                <i class="fas fa-mountain"></i>
+                            </div>
+                            <div class="level-title">
+                                <h3>Medium</h3>
+                                <p>Mixed letters, moderate challenge</p>
+                            </div>
+                        </div>
+
+                        <div class="level-description">
+                            <p>For intermediate players. Letter sets include less common letters and combinations that
+                                require more vocabulary knowledge.</p>
+                        </div>
+
+                        <div class="timing-options">
+                            <h4>Select Time per Question:</h4>
+                            <div class="time-buttons" data-level="medium">
+                                <button class="time-btn" data-time="30">30s</button>
+                                <button class="time-btn active" data-time="60">60s</button>
+                                <button class="time-btn" data-time="90">90s</button>
+                            </div>
+                        </div>
+
+                        <button class="action-btn action-btn-primary" data-level="medium">
+                            <i class="fas fa-play"></i> Play Medium Level
+                        </button>
+                    </div>
+
+                    <!-- Difficult Level Card -->
+                    <div class="level-card difficult">
+                        <div class="level-header">
+                            <div class="level-icon difficult">
+                                <i class="fas fa-mountain"></i>
+                            </div>
+                            <div class="level-title">
+                                <h3>Difficult</h3>
+                                <p>Complex letters, advanced vocabulary</p>
+                            </div>
+                        </div>
+
+                        <div class="level-description">
+                            <p>For expert players. Letter sets include rare letters and challenging combinations that
+                                test your extensive vocabulary.</p>
+                        </div>
+
+                        <div class="timing-options">
+                            <h4>Select Time per Question:</h4>
+                            <div class="time-buttons" data-level="difficult">
+                                <button class="time-btn active" data-time="30">30s</button>
+                                <button class="time-btn" data-time="60">60s</button>
+                                <button class="time-btn" data-time="90">90s</button>
+                            </div>
+                        </div>
+
+                        <button class="action-btn action-btn-primary" data-level="difficult">
+                            <i class="fas fa-play"></i> Play Difficult Level
+                        </button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn action-btn-secondary" id="instructions-btn">
+                        <i class="fas fa-question-circle"></i> View Game Instructions
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== PAGE 4: GAME PAGE ====== -->
+    <div id="game-page" class="page-container">
+        <div class="container">
+            <header>
+                <div class="logo">
+                    <i class="fas fa-spell-check"></i>
+                    <h1>IAK STEAM Words Builder</h1>
+                </div>
+                <div class="game-info">
+                    <div class="info-item">
+                        <div class="info-value" id="score">0</div>
+                        <div class="info-label">Score</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-value" id="round">1/10</div>
+                        <div class="info-label">Round</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-value" id="question">1/10</div>
+                        <div class="info-label">Question</div>
+                    </div>
+                </div>
+                <button class="admin-header-btn" onclick="showPage('admin-page')">
+                    <i class="fas fa-user-cog"></i> Admin Panel
+                </button>
+            </header>
+
+            <div class="game-main">
+                <div class="sidebar">
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Game Progress</span>
+                            <span id="progress-percent">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3>Player Info</h3>
+                        <div style="background-color: white; padding: 12px; border-radius: 10px; margin-top: 8px;">
+                            <p><strong>Username:</strong> <span id="player-username">Player</span></p>
+                            <p><strong>Level:</strong> <span id="player-level"
+                                    class="level-badge level-normal">Normal</span></p>
+                            <p><strong>Time per question:</strong> <span id="player-time">60s</span></p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3>Game Rules</h3>
+                        <ul style="padding-left: 18px; margin-top: 8px; font-size: 13px;">
+                            <li>Click letters to build words</li>
+                            <li>Submit valid English words</li>
+                            <li>Use only the given letters</li>
+                            <li>Each letter can be reused</li>
+                            <li>Score points for valid words</li>
+                        </ul>
+                    </div>
+
+                    <div class="game-controls">
+                        <button class="sidebar-btn" onclick="showPage('instructions-page')">
+                            <i class="fas fa-question-circle"></i> Game Instructions
+                        </button>
+                        <button class="sidebar-btn" onclick="showPage('level-page')">
+                            <i class="fas fa-redo"></i> Change Level
+                        </button>
+                        <button class="btn btn-secondary" id="pause-btn">
+                            <i class="fas fa-pause"></i> Pause Game
+                        </button>
+                    </div>
+                </div>
+
+                <div class="game-area">
+                    <div class="game-header">
+                        <div class="level-info">
+                            Round <span id="current-round">1</span> of 10 |
+                            Question <span id="current-question">1</span> of 10
+                        </div>
+                        <div class="game-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="words-submitted">0</div>
+                                <div class="stat-label">Words</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="valid-words">0</div>
+                                <div class="stat-label">Valid</div>
+                            </div>
+                            <div class="timer" id="timer">60</div>
+                        </div>
+                    </div>
+
+                    <div class="letter-circle-container">
+                        <div class="letter-circle" id="letter-circle">
+                            <!-- Letters will be dynamically inserted here -->
+                        </div>
+                    </div>
+
+                    <div class="word-building-area">
+                        <div class="current-word" id="current-word"></div>
+                        <div class="word-actions">
+                            <button class="btn btn-success" id="submit-word">
+                                <i class="fas fa-check"></i> Submit Word
+                            </button>
+                            <button class="btn btn-secondary" id="clear-word">
+                                <i class="fas fa-undo"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="submitted-words">
+                        <h3>
+                            Submitted Words
+                            <span id="word-count">0 words</span>
+                        </h3>
+                        <div class="words-list" id="words-list">
+                            <!-- Submitted words will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== PAGE 5: INSTRUCTIONS PAGE ====== -->
+    <div id="instructions-page" class="page-container">
+        <div class="container">
+            <header>
+                <div class="logo">
+                    <i class="fas fa-spell-check"></i>
+                    <h1>IAK STEAM Words Builder</h1>
+                </div>
+                <p class="tagline">Learn how to play the game</p>
+                <button class="admin-header-btn" onclick="showPage('admin-page')">
+                    <i class="fas fa-user-cog"></i> Admin Panel
+                </button>
+            </header>
+
+            <div class="instructions-content">
+                <div class="instructions-nav">
+                    <button class="action-btn action-btn-secondary" onclick="showPage('welcome-page')">
+                        <i class="fas fa-home"></i> Back to Home
+                    </button>
+                    <button class="action-btn action-btn-primary" onclick="showPage('level-page')">
+                        <i class="fas fa-play"></i> Start Playing
+                    </button>
+                </div>
+
+                <div class="instruction-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <div class="section-title">
+                            <h2>How to Play</h2>
+                            <p>The basic gameplay mechanics</p>
+                        </div>
+                    </div>
+
+                    <div class="instruction-content">
+                        <p><strong>Create the Words</strong> is an interactive word-building game designed to enhance
+                            vocabulary, speed, and accuracy. In each round, you're given a unique set of letters
+                            arranged in a circular layout.</p>
+
+                        <ol>
+                            <li><strong>Build words</strong> by clicking on letters in the circular layout</li>
+                            <li><strong>Submit words</strong> by clicking the Submit button when you've formed a valid
+                                English word</li>
+                            <li><strong>Use only the given letters</strong> - you can reuse letters as many times as you
+                                want</li>
+                            <li><strong>Score points</strong> for each valid word you submit</li>
+                            <li><strong>Complete all 10 rounds</strong> (10 questions each) to finish the game</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="instruction-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div class="section-title">
+                            <h2>Difficulty Levels</h2>
+                            <p>Choose the challenge that suits you</p>
+                        </div>
+                    </div>
+
+                    <div class="instruction-content">
+                        <p>The game offers three difficulty levels, each with different letter combinations and scoring
+                            multipliers:</p>
+
+                        <div class="difficulty-cards">
+                            <div class="difficulty-card">
+                                <h4>Normal Level</h4>
+                                <ul>
+                                    <li>Common letters and vowels</li>
+                                    <li>Easier word formations</li>
+                                    <li>1x score multiplier</li>
+                                    <li>Perfect for beginners</li>
+                                </ul>
+                            </div>
+
+                            <div class="difficulty-card">
+                                <h4>Medium Level</h4>
+                                <ul>
+                                    <li>Mixed letter combinations</li>
+                                    <li>Moderate challenge</li>
+                                    <li>1.5x score multiplier</li>
+                                    <li>For intermediate players</li>
+                                </ul>
+                            </div>
+
+                            <div class="difficulty-card">
+                                <h4>Difficult Level</h4>
+                                <ul>
+                                    <li>Complex letter sets</li>
+                                    <li>Advanced vocabulary needed</li>
+                                    <li>2x score multiplier</li>
+                                    <li>For expert players</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="instruction-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="section-title">
+                            <h2>Time Options</h2>
+                            <p>Customize your gameplay experience</p>
+                        </div>
+                    </div>
+
+                    <div class="instruction-content">
+                        <p>You can select different time limits for each difficulty level:</p>
+
+                        <ul>
+                            <li><strong>30 seconds per question:</strong> Fast-paced challenge for quick thinkers</li>
+                            <li><strong>60 seconds per question:</strong> Balanced gameplay with enough time to think
+                            </li>
+                            <li><strong>90 seconds per question:</strong> Relaxed pace for strategic word building</li>
+                        </ul>
+
+                        <p>You can select different time limits for each difficulty level on the Level Selection page.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="instruction-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-keyboard"></i>
+                        </div>
+                        <div class="section-title">
+                            <h2>Keyboard Shortcuts</h2>
+                            <p>Speed up your gameplay</p>
+                        </div>
+                    </div>
+
+                    <div class="instruction-content">
+                        <p>Use these keyboard shortcuts during gameplay:</p>
+
+                        <div class="keyboard-shortcuts">
+                            <div class="shortcut-item">
+                                <div class="shortcut-key">Space</div>
+                                <div class="shortcut-description">Submit current word</div>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <div class="shortcut-key">Escape</div>
+                                <div class="shortcut-description">Clear current word</div>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <div class="shortcut-key">P</div>
+                                <div class="shortcut-description">Pause/Resume game</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="instruction-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="section-title">
+                            <h2>Scoring System</h2>
+                            <p>How to maximize your score</p>
+                        </div>
+                    </div>
+
+                    <div class="instruction-content">
+                        <ul>
+                            <li><strong>Base score:</strong> Word length × 10 points (e.g., 5-letter word = 50 points)
+                            </li>
+                            <li><strong>Difficulty multiplier:</strong> Normal (1x), Medium (1.5x), Difficult (2x)</li>
+                            <li><strong>Example:</strong> A 6-letter word on Medium difficulty = 6 × 10 × 1.5 = 90
+                                points</li>
+                            <li><strong>Only valid English words</strong> are scored</li>
+                            <li>Invalid words are recorded but don't earn points</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn action-btn-primary" onclick="showPage('level-page')">
+                        <i class="fas fa-play"></i> Start Playing Now
+                    </button>
+
+                    <button class="action-btn action-btn-secondary" onclick="showPage('welcome-page')">
+                        <i class="fas fa-home"></i> Back to Home
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== PAGE 6: RESULTS PAGE ====== -->
+    <div id="results-page" class="page-container">
+        <div class="container">
+            <header>
+                <div class="logo">
+                    <i class="fas fa-spell-check"></i>
+                    <h1>IAK STEAM Words Builder</h1>
+                </div>
+                <p class="tagline">Your game results</p>
+                <button class="admin-header-btn" onclick="showPage('admin-page')">
+                    <i class="fas fa-user-cog"></i> Admin Panel
+                </button>
+            </header>
+
+            <div class="results-content">
+                <div class="results-summary">
+                    <div class="final-score" id="final-score">0</div>
+                    <div class="score-label">Final Score</div>
+                    <div class="performance-message" id="performance-message">Good effort!</div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-value" id="valid-words-count">0</div>
+                        <div class="stat-label">Valid Words</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-value" id="invalid-words-count">0</div>
+                        <div class="stat-label">Invalid Words</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-list-ol"></i>
+                        </div>
+                        <div class="stat-value" id="total-words-count">0</div>
+                        <div class="stat-label">Total Words</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-value" id="rounds-completed">0</div>
+                        <div class="stat-label">Rounds Completed</div>
+                    </div>
+                </div>
+
+                <div class="accuracy-container">
+                    <div class="accuracy-header">
+                        <div class="accuracy-title">Word Accuracy</div>
+                        <div class="accuracy-percent" id="accuracy-percent">0%</div>
+                    </div>
+                    <div class="accuracy-bar">
+                        <div class="accuracy-fill" id="accuracy-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="level-info">
+                    <h3>Game Settings</h3>
+                    <div class="level-details">
+                        <div class="level-detail">
+                            <div class="detail-label">Username</div>
+                            <div class="detail-value" id="result-username">Player</div>
+                        </div>
+
+                        <div class="level-detail">
+                            <div class="detail-label">Difficulty Level</div>
+                            <div class="detail-value">
+                                <span id="result-level" class="level-badge level-normal">Normal</span>
+                            </div>
+                        </div>
+
+                        <div class="level-detail">
+                            <div class="detail-label">Time per Question</div>
+                            <div class="detail-value" id="result-time">60s</div>
+                        </div>
+
+                        <div class="level-detail">
+                            <div class="detail-label">Date Played</div>
+                            <div class="detail-value" id="result-date">Today</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn action-btn-primary" onclick="showPage('game-page'); initGame();">
+                        <i class="fas fa-redo"></i> Play Again
+                    </button>
+
+                    <button class="action-btn action-btn-secondary" onclick="showPage('level-page')">
+                        <i class="fas fa-layer-group"></i> Change Level
+                    </button>
+
+                    <button class="action-btn action-btn-secondary" onclick="showPage('welcome-page')">
+                        <i class="fas fa-home"></i> Back to Home
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== PAGE 7: ADMIN PAGE ====== -->
+    <div id="admin-page" class="page-container">
+        <div class="container">
+            <header>
+                <div class="logo">
+                    <i class="fas fa-spell-check"></i>
+                    <h1>IAK STEAM Words Builder</h1>
+                </div>
+                <p class="tagline">Admin Panel - Manage game data</p>
+                <button class="admin-header-btn" onclick="showPage('welcome-page')">
+                    <i class="fas fa-home"></i> Back to Game
+                </button>
+            </header>
+
+            <div class="admin-content">
+                <div class="admin-login" id="login-section">
+                    <div class="login-form">
+                        <h2>Admin Login</h2>
+                        <p style="margin-bottom: 15px; color: var(--text-light);">Enter your admin credentials to access
+                            the dashboard</p>
+
+                        <div class="form-group">
+                            <label for="admin-username">Username</label>
+                            <input type="text" id="admin-username" placeholder="Enter admin username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="admin-password">Password</label>
+                            <input type="password" id="admin-password" placeholder="Enter admin password">
+                        </div>
+
+                        <div class="button-group">
+                            <button class="action-btn action-btn-primary" id="login-btn">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </button>
+
+                            <button class="action-btn action-btn-secondary" onclick="showPage('welcome-page')">
+                                <i class="fas fa-home"></i> Back to Home
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-panel" id="admin-panel">
+                    <div class="admin-controls">
+                        <div>
+                            <h2>User Statistics Dashboard</h2>
+                            <p>View and manage all game data</p>
+                        </div>
+                        <div>
+                            <button class="action-btn action-btn-secondary" id="logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="stats-summary">
+                        <div class="stat-box">
+                            <div class="stat-value" id="total-users">0</div>
+                            <div class="stat-label">Total Users</div>
+                        </div>
+
+                        <div class="stat-box">
+                            <div class="stat-value" id="total-games">0</div>
+                            <div class="stat-label">Games Played</div>
+                        </div>
+
+                        <div class="stat-box">
+                            <div class="stat-value" id="total-words">0</div>
+                            <div class="stat-label">Words Submitted</div>
+                        </div>
+
+                        <div class="stat-box">
+                            <div class="stat-value" id="avg-score">0</div>
+                            <div class="stat-label">Average Score</div>
+                        </div>
+                    </div>
+
+                    <div class="data-controls">
+                        <button class="action-btn action-btn-secondary" id="clear-data-btn">
+                            <i class="fas fa-trash"></i> Clear All Data
+                        </button>
+
+                        <button class="action-btn action-btn-secondary" id="refresh-btn">
+                            <i class="fas fa-sync"></i> Refresh Data
+                        </button>
+                    </div>
+
+                    <h3>All Game Sessions</h3>
+                    <div id="data-table-container">
+                        <table id="users-table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Difficulty</th>
+                                    <th>Time Limit</th>
+                                    <th>Rounds</th>
+                                    <th>Correct</th>
+                                    <th>Incorrect</th>
+                                    <th>Score</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body">
+                                <!-- Data will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <button class="action-btn action-btn-secondary" id="export-btn">
+                        <i class="fas fa-download"></i> Export Data as JSON
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ====== GLOBAL VARIABLES ======
+        const gameState = {
+            username: '',
+            difficulty: 'normal',
+            timePerQuestion: 60,
+            score: 0,
+            currentRound: 1,
+            currentQuestion: 1,
+            currentWord: '',
+            usedLetters: [],
+            submittedWords: [],
+            validWordsCount: 0,
+            timer: 60,
+            timerInterval: null,
+            gameActive: false,
+            isPaused: false,
+            letterSets: {
+                normal: [],
+                medium: [],
+                difficult: []
+            }
+        };
+
+        // Predefined letter sets for each difficulty
+        const letterSetsData = {
+            normal: [
+                ['C', 'A', 'T', 'E', 'R', 'P', 'L'],
+                ['S', 'T', 'A', 'R', 'E', 'D', 'N'],
+                ['P', 'L', 'A', 'N', 'E', 'T', 'S'],
+                ['F', 'L', 'O', 'W', 'E', 'R', 'S'],
+                ['B', 'R', 'I', 'D', 'G', 'E', 'S'],
+                ['H', 'O', 'U', 'S', 'E', 'S', 'T'],
+                ['M', 'U', 'S', 'I', 'C', 'A', 'L'],
+                ['S', 'P', 'R', 'I', 'N', 'G', 'T'],
+                ['W', 'A', 'T', 'E', 'R', 'S', 'K'],
+                ['B', 'E', 'A', 'C', 'H', 'E', 'S']
+            ],
+            medium: [
+                ['J', 'O', 'U', 'R', 'N', 'E', 'Y'],
+                ['Q', 'U', 'A', 'R', 'T', 'Z', 'S'],
+                ['B', 'L', 'A', 'Z', 'I', 'N', 'G'],
+                ['C', 'H', 'A', 'M', 'P', 'I', 'O'],
+                ['F', 'L', 'A', 'M', 'B', 'O', 'Y'],
+                ['P', 'H', 'E', 'N', 'O', 'M', 'A'],
+                ['V', 'I', 'B', 'R', 'A', 'N', 'T'],
+                ['W', 'H', 'I', 'S', 'K', 'E', 'Y'],
+                ['G', 'N', 'A', 'R', 'L', 'E', 'D'],
+                ['S', 'Q', 'U', 'A', 'W', 'K', 'S']
+            ],
+            difficult: [
+                ['X', 'Y', 'L', 'O', 'P', 'H', 'N'],
+                ['J', 'A', 'Z', 'Z', 'I', 'N', 'E'],
+                ['Q', 'U', 'I', 'X', 'O', 'T', 'C'],
+                ['Z', 'E', 'P', 'H', 'Y', 'R', 'S'],
+                ['B', 'O', 'X', 'E', 'N', 'T', 'R'],
+                ['J', 'U', 'N', 'K', 'E', 'T', 'Y'],
+                ['V', 'O', 'R', 'T', 'E', 'X', 'Y'],
+                ['P', 'Y', 'G', 'M', 'A', 'L', 'I'],
+                ['F', 'L', 'U', 'M', 'M', 'O', 'X'],
+                ['Z', 'W', 'I', 'S', 'C', 'H', 'E']
+            ]
+        };
+
+        // Enhanced valid word database
+        const validWords = [
+            // Words from CATERPL set (Normal Level 1)
+            'CAT', 'ATE', 'TEA', 'EAT', 'RAT', 'TAR', 'ART', 'CAR', 'ARC', 'ARE', 'EAR',
+            'ERA', 'LET', 'TEL', 'PET', 'PEA', 'APE', 'LAP', 'PAL', 'PAR', 'RAP', 'TAP',
+            'PAT', 'CAP', 'ACE', 'TAPE', 'CART', 'PART', 'TRAP', 'CRATE', 'CARPET', 'CATER',
+
+            // Words from STAREDN set (Normal Level 2)
+            'STAR', 'TAR', 'RAT', 'ART', 'SAD', 'SAND', 'AND', 'END', 'SEND', 'SENT',
+            'TEN', 'NET', 'DEN', 'RED', 'READ', 'DARE', 'DATE', 'RATE', 'TEAR', 'NEAR',
+            'EAR', 'ARE', 'ERA', 'STAND', 'TRADE', 'DATES', 'RATED', 'STARED',
+
+            // Words from PLANETS set (Normal Level 3)
+            'PLAN', 'LANE', 'PLANE', 'PLANET', 'PLANETS', 'NET', 'TEN', 'PEN', 'PAN',
+            'NAP', 'TAP', 'PAT', 'SAT', 'SAP', 'SPA', 'SALE', 'SEAL', 'LEAP', 'PALE',
+            'PEAL', 'PEAS', 'SEAT', 'TEAS', 'TALE', 'LATE', 'ATE', 'EAT', 'TEA',
+
+            // Words from FLOWERS set (Normal Level 4)
+            'FLOW', 'FLOWER', 'FLOWERS', 'LOW', 'OWE', 'ROW', 'SOW', 'SOF', 'FOE',
+            'ORE', 'ROSE', 'SORE', 'FORE', 'FOWL', 'OWL', 'SOW', 'LOSE', 'SOLE',
+            'SELF', 'FLOW', 'SLOW', 'FOWL', 'OWES', 'ROWS', 'SOWER',
+
+            // Words from BRIDGES set (Normal Level 5)
+            'BRIDGE', 'BRIDGES', 'BID', 'BIG', 'DIG', 'RIB', 'RIG', 'SIR', 'SIDE',
+            'DIE', 'RED', 'BED', 'BE', 'IS', 'SIB', 'BIDE', 'BRED', 'DIRGE', 'GIRD',
+            'GRID', 'RISE', 'SIDE', 'SIRE', 'BRIS', 'BRIDE', 'BRIDES',
+
+            // Common English words
+            'DOG', 'HOUSE', 'BOOK', 'TREE', 'WATER', 'MUSIC', 'SPRING', 'BEACH',
+            'PLAY', 'GAME', 'WORD', 'LETTER', 'BUILD', 'CREATE', 'FORM', 'MAKE',
+            'FIND', 'SPELL', 'WRITE', 'READ', 'LEARN', 'TEST', 'SKILL', 'BRAIN'
+        ];
+
+        // Admin credentials
+        const ADMIN_USERNAME = 'admin';
+        const ADMIN_PASSWORD = '1234';
+
+        // ====== PAGE MANAGEMENT FUNCTIONS ======
+        function showPage(pageId) {
+            try {
+                // Hide all pages
+                document.querySelectorAll('.page-container').forEach(page => {
+                    page.classList.remove('active');
+                });
+
+                // Show the requested page
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                } else {
+                    console.error(`Page with id "${pageId}" not found`);
+                    document.getElementById('welcome-page').classList.add('active');
+                    return;
+                }
+
+                // Handle page-specific initialization
+                switch (pageId) {
+                    case 'level-page':
+                        updateUserInfoDisplay();
+                        break;
+                    case 'game-page':
+                        setTimeout(initGame, 100); // Delay to ensure DOM is ready
+                        break;
+                    case 'results-page':
+                        setTimeout(loadGameResult, 100);
+                        break;
+                    case 'admin-page':
+                        setTimeout(checkAdminLoginStatus, 100);
+                        break;
+                }
+            } catch (error) {
+                console.error('Error in showPage:', error);
+                document.getElementById('welcome-page').classList.add('active');
+            }
+        }
+
+        // ====== WELCOME PAGE ======
+        document.getElementById('start-playing-btn').addEventListener('click', () => {
+            showPage('username-page');
+        });
+
+        // ====== USERNAME PAGE ======
+        document.getElementById('continue-btn').addEventListener('click', () => {
+            const usernameInput = document.getElementById('username');
+            const username = usernameInput ? usernameInput.value.trim() : '';
+
+            if (!username) {
+                alert('Please enter a username');
+                return;
+            }
+
+            if (username.length < 3 || username.length > 20) {
+                alert('Username must be between 3 and 20 characters');
+                return;
+            }
+
+            if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                alert('Username can only contain letters, numbers, and underscores');
+                return;
+            }
+
+            // Save username to localStorage
+            localStorage.setItem('ctw_username', username);
+
+            // Show level selection page
+            showPage('level-page');
+        });
+
+        document.getElementById('back-welcome-btn').addEventListener('click', () => {
+            showPage('welcome-page');
+        });
+
+        // ====== LEVEL SELECTION PAGE ======
+        function updateUserInfoDisplay() {
+            try {
+                const username = localStorage.getItem('ctw_username') || 'Player';
+                const usernameDisplay = document.getElementById('username-display');
+                if (usernameDisplay) {
+                    usernameDisplay.textContent = username;
+                    usernameDisplay.classList.add('username-pulse');
+                    setTimeout(() => {
+                        usernameDisplay.classList.remove('username-pulse');
+                    }, 500);
+                }
+
+                // Update user avatar
+                updateUserAvatar(username);
+            } catch (error) {
+                console.error('Error updating user info:', error);
+            }
+        }
+
+        function updateUserAvatar(username) {
+            const avatar = document.getElementById('user-avatar');
+            if (!avatar) return;
+
+            if (username === 'Player' || !username) {
+                avatar.innerHTML = '<i class="fas fa-user"></i>';
+                return;
+            }
+
+            // Generate initials from username
+            const words = username.split(/[_\s]+/);
+            let initials = '';
+
+            if (words.length === 1) {
+                initials = words[0].substring(0, 2).toUpperCase();
+            } else {
+                initials = words[0].charAt(0).toUpperCase() + words[1].charAt(0).toUpperCase();
+            }
+
+            avatar.textContent = initials;
+        }
+
+        // Store selected time for each level
+        const selectedTimes = {
+            normal: 90,
+            medium: 60,
+            difficult: 30
+        };
+
+        // Set up time button selection
+        document.querySelectorAll('.time-buttons').forEach(buttonGroup => {
+            const level = buttonGroup.dataset.level;
+            if (!level) return;
+
+            const timeButtons = buttonGroup.querySelectorAll('.time-btn');
+            timeButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // Remove active class from all buttons in this group
+                    timeButtons.forEach(btn => btn.classList.remove('active'));
+
+                    // Add active class to clicked button
+                    this.classList.add('active');
+
+                    // Store selected time
+                    const time = parseInt(this.dataset.time);
+                    if (!isNaN(time)) {
+                        selectedTimes[level] = time;
+                    }
+                });
+            });
+        });
+
+        // Set up level selection buttons
+        document.querySelectorAll('.action-btn[data-level]').forEach(button => {
+            button.addEventListener('click', function () {
+                const level = this.dataset.level;
+                if (!level) return;
+
+                const time = selectedTimes[level] || 60;
+
+                // Save selections to localStorage
+                localStorage.setItem('ctw_level', level);
+                localStorage.setItem('ctw_time', time.toString());
+
+                // Show game page
+                showPage('game-page');
+            });
+        });
+
+        // Enhanced change username button
+        const changeUsernameBtn = document.getElementById('change-username-btn');
+        if (changeUsernameBtn) {
+            changeUsernameBtn.addEventListener('click', () => {
+                // Add click animation
+                changeUsernameBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    changeUsernameBtn.style.transform = '';
+                }, 200);
+
+                // Show confirmation
+                if (confirm('Do you want to change your username? Your current progress will be saved.')) {
+                    showPage('username-page');
+                }
+            });
+        }
+
+        // Enhanced back button
+        const backUsernameBtn = document.getElementById('back-username-btn');
+        if (backUsernameBtn) {
+            backUsernameBtn.addEventListener('click', () => {
+                // Add click animation
+                backUsernameBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    backUsernameBtn.style.transform = '';
+                }, 200);
+
+                // Show confirmation if user has made selections
+                const hasSelections = localStorage.getItem('ctw_level') || localStorage.getItem('ctw_time');
+
+                if (hasSelections) {
+                    if (confirm('Are you sure you want to go back? Your level and time selections will be saved.')) {
+                        showPage('username-page');
+                    }
+                } else {
+                    showPage('username-page');
+                }
+            });
+        }
+
+        const instructionsBtn = document.getElementById('instructions-btn');
+        if (instructionsBtn) {
+            instructionsBtn.addEventListener('click', () => {
+                showPage('instructions-page');
+            });
+        }
+
+        // ====== GAME PAGE ======
+        function initGame() {
+            try {
+                // Clear any existing timer
+                if (gameState.timerInterval) {
+                    clearInterval(gameState.timerInterval);
+                    gameState.timerInterval = null;
+                }
+
+                // Reset game state
+                gameState.score = 0;
+                gameState.currentRound = 1;
+                gameState.currentQuestion = 1;
+                gameState.currentWord = '';
+                gameState.usedLetters = [];
+                gameState.submittedWords = [];
+                gameState.validWordsCount = 0;
+                gameState.gameActive = true;
+                gameState.isPaused = false;
+
+                // Load game settings
+                gameState.username = localStorage.getItem('ctw_username') || 'Player';
+                gameState.difficulty = localStorage.getItem('ctw_level') || 'normal';
+                gameState.timePerQuestion = parseInt(localStorage.getItem('ctw_time')) || 60;
+                gameState.timer = gameState.timePerQuestion;
+
+                // Update player info display
+                const playerUsername = document.getElementById('player-username');
+                const playerTime = document.getElementById('player-time');
+                const levelBadge = document.getElementById('player-level');
+
+                if (playerUsername) playerUsername.textContent = gameState.username;
+                if (playerTime) playerTime.textContent = `${gameState.timePerQuestion}s`;
+
+                if (levelBadge) {
+                    levelBadge.textContent = gameState.difficulty.charAt(0).toUpperCase() + gameState.difficulty.slice(1);
+                    levelBadge.className = `level-badge level-${gameState.difficulty}`;
+                }
+
+                // Load letter sets
+                gameState.letterSets = {
+                    normal: [...letterSetsData.normal],
+                    medium: [...letterSetsData.medium],
+                    difficult: [...letterSetsData.difficult]
+                };
+
+                // Update display
+                updateGameDisplay();
+
+                // Load first question
+                loadQuestion();
+
+                // Start timer
+                startTimer();
+            } catch (error) {
+                console.error('Error initializing game:', error);
+                alert('Error starting game. Please try again.');
+                showPage('level-page');
+            }
+        }
+
+        function loadQuestion() {
+            try {
+                // Clear previous letters
+                const letterCircle = document.getElementById('letter-circle');
+                if (!letterCircle) {
+                    console.error('Letter circle element not found');
+                    return;
+                }
+                letterCircle.innerHTML = '';
+
+                // Reset current word
+                gameState.currentWord = '';
+                gameState.usedLetters = [];
+                const currentWordElement = document.getElementById('current-word');
+                if (currentWordElement) {
+                    currentWordElement.textContent = '';
+                }
+
+                // Clear submitted words list
+                const wordsList = document.getElementById('words-list');
+                if (wordsList) {
+                    wordsList.innerHTML = '';
+                }
+                gameState.submittedWords = [];
+
+                // Get current letter set
+                const letterSets = gameState.letterSets[gameState.difficulty];
+                const currentSetIndex = (gameState.currentRound - 1) * 10 + (gameState.currentQuestion - 1);
+
+                if (currentSetIndex >= letterSets.length) {
+                    // End of game
+                    endGame();
+                    return;
+                }
+
+                const letters = letterSets[currentSetIndex];
+
+                // Calculate circle size based on screen width
+                const screenWidth = window.innerWidth;
+                let circleSize, letterSize, fontSize;
+
+                if (screenWidth < 480) {
+                    circleSize = 220;
+                    letterSize = 40;
+                    fontSize = 18;
+                } else if (screenWidth < 768) {
+                    circleSize = 250;
+                    letterSize = 45;
+                    fontSize = 20;
+                } else if (screenWidth < 992) {
+                    circleSize = 280;
+                    letterSize = 50;
+                    fontSize = 22;
+                } else {
+                    circleSize = 300;
+                    letterSize = 55;
+                    fontSize = 24;
+                }
+
+                // Update circle size
+                letterCircle.style.width = `${circleSize}px`;
+                letterCircle.style.height = `${circleSize}px`;
+
+                const radius = circleSize / 2 - letterSize;
+                const centerX = circleSize / 2;
+                const centerY = circleSize / 2;
+
+                letters.forEach((letter, index) => {
+                    const angle = (index / letters.length) * 2 * Math.PI;
+                    const x = centerX + radius * Math.cos(angle);
+                    const y = centerY + radius * Math.sin(angle);
+
+                    const letterButton = document.createElement('div');
+                    letterButton.className = 'letter-btn';
+                    letterButton.textContent = letter;
+                    letterButton.style.width = `${letterSize}px`;
+                    letterButton.style.height = `${letterSize}px`;
+                    letterButton.style.left = `${x - letterSize / 2}px`;
+                    letterButton.style.top = `${y - letterSize / 2}px`;
+                    letterButton.style.fontSize = `${fontSize}px`;
+
+                    letterButton.addEventListener('click', () => addLetterToWord(letter));
+                    letterButton.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        addLetterToWord(letter);
+                    }, { passive: false });
+
+                    letterCircle.appendChild(letterButton);
+                });
+
+                updateGameDisplay();
+            } catch (error) {
+                console.error('Error loading question:', error);
+            }
+        }
+
+        function addLetterToWord(letter) {
+            if (!gameState.gameActive || gameState.isPaused) return;
+
+            gameState.currentWord += letter;
+            gameState.usedLetters.push(letter);
+            const currentWordDisplay = document.getElementById('current-word');
+            if (currentWordDisplay) {
+                currentWordDisplay.textContent = gameState.currentWord;
+
+                // Add pulse animation
+                currentWordDisplay.classList.add('pulse');
+                setTimeout(() => {
+                    currentWordDisplay.classList.remove('pulse');
+                }, 300);
+            }
+        }
+
+        // Set up game event listeners
+        const submitWordBtn = document.getElementById('submit-word');
+        const clearWordBtn = document.getElementById('clear-word');
+        const pauseBtn = document.getElementById('pause-btn');
+
+        if (submitWordBtn) submitWordBtn.addEventListener('click', submitWord);
+        if (clearWordBtn) clearWordBtn.addEventListener('click', clearCurrentWord);
+        if (pauseBtn) pauseBtn.addEventListener('click', togglePause);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function (e) {
+            if (!gameState.gameActive) return;
+
+            // Spacebar to submit word
+            if (e.code === 'Space' && gameState.currentWord) {
+                e.preventDefault();
+                submitWord();
+            }
+
+            // Escape to clear word
+            if (e.code === 'Escape') {
+                clearCurrentWord();
+            }
+
+            // P to pause/unpause
+            if (e.code === 'KeyP') {
+                togglePause();
+            }
+        });
+
+        function submitWord() {
+            if (!gameState.gameActive || gameState.isPaused || !gameState.currentWord) return;
+
+            const word = gameState.currentWord.toUpperCase();
+            const isValid = validateWord(word);
+
+            // Create word item
+            const wordItem = document.createElement('div');
+            wordItem.className = `word-item ${isValid ? 'valid' : 'invalid'}`;
+            wordItem.textContent = word;
+
+            // Add to words list
+            const wordsList = document.getElementById('words-list');
+            if (wordsList) {
+                wordsList.prepend(wordItem);
+            }
+
+            // Update game state
+            if (isValid) {
+                gameState.score += calculateScore(word);
+                gameState.validWordsCount++;
+                gameState.submittedWords.push({ word, valid: true });
+
+                // Add success animation
+                const scoreDisplay = document.getElementById('score');
+                if (scoreDisplay) {
+                    scoreDisplay.classList.add('pulse');
+                    setTimeout(() => {
+                        scoreDisplay.classList.remove('pulse');
+                    }, 300);
+                }
+            } else {
+                gameState.submittedWords.push({ word, valid: false });
+            }
+
+            // Clear current word
+            clearCurrentWord();
+            updateGameDisplay();
+
+            // Scroll words list to top
+            if (wordsList) {
+                wordsList.scrollTop = 0;
+            }
+
+            // Check if we should move to next question
+            if (gameState.submittedWords.length >= 5) {
+                setTimeout(nextQuestion, 1000);
+            }
+        }
+
+        function validateWord(word) {
+            // Basic validation
+            if (!word || word.length < 2) return false;
+
+            // Convert to uppercase for case-insensitive comparison
+            const upperWord = word.toUpperCase();
+
+            // Check if word is in valid words list
+            return validWords.includes(upperWord);
+        }
+
+        function calculateScore(word) {
+            let baseScore = word.length * 10;
+
+            // Bonus for difficulty
+            switch (gameState.difficulty) {
+                case 'medium': baseScore *= 1.5; break;
+                case 'difficult': baseScore *= 2; break;
+            }
+
+            return Math.floor(baseScore);
+        }
+
+        function clearCurrentWord() {
+            gameState.currentWord = '';
+            gameState.usedLetters = [];
+            const currentWordDisplay = document.getElementById('current-word');
+            if (currentWordDisplay) {
+                currentWordDisplay.textContent = '';
+            }
+        }
+
+        function togglePause() {
+            gameState.isPaused = !gameState.isPaused;
+            const pauseButton = document.getElementById('pause-btn');
+            if (!pauseButton) return;
+
+            if (gameState.isPaused) {
+                pauseButton.innerHTML = '<i class="fas fa-play"></i> Resume Game';
+                pauseButton.classList.remove('btn-secondary');
+                pauseButton.classList.add('btn-success');
+            } else {
+                pauseButton.innerHTML = '<i class="fas fa-pause"></i> Pause Game';
+                pauseButton.classList.remove('btn-success');
+                pauseButton.classList.add('btn-secondary');
+            }
+        }
+
+        function nextQuestion() {
+            gameState.currentQuestion++;
+
+            if (gameState.currentQuestion > 10) {
+                gameState.currentQuestion = 1;
+                gameState.currentRound++;
+
+                if (gameState.currentRound > 10) {
+                    endGame();
+                    return;
+                }
+            }
+
+            // Reset for next question
+            gameState.submittedWords = [];
+            gameState.timer = gameState.timePerQuestion;
+
+            loadQuestion();
+            updateGameDisplay();
+        }
+
+        function updateGameDisplay() {
+            try {
+                // Update score
+                const scoreElement = document.getElementById('score');
+                if (scoreElement) scoreElement.textContent = gameState.score;
+
+                // Update round and question displays
+                const roundElement = document.getElementById('round');
+                const questionElement = document.getElementById('question');
+                const currentRoundElement = document.getElementById('current-round');
+                const currentQuestionElement = document.getElementById('current-question');
+
+                if (roundElement) roundElement.textContent = `${gameState.currentRound}/10`;
+                if (questionElement) questionElement.textContent = `${gameState.currentQuestion}/10`;
+                if (currentRoundElement) currentRoundElement.textContent = gameState.currentRound;
+                if (currentQuestionElement) currentQuestionElement.textContent = gameState.currentQuestion;
+
+                // Update timer display
+                const timerDisplay = document.getElementById('timer');
+                if (timerDisplay) {
+                    timerDisplay.textContent = gameState.timer;
+
+                    // Update timer color based on remaining time
+                    const timePercent = (gameState.timer / gameState.timePerQuestion) * 100;
+                    timerDisplay.classList.remove('warning', 'danger');
+
+                    if (timePercent < 30) {
+                        timerDisplay.classList.add('danger');
+                    } else if (timePercent < 50) {
+                        timerDisplay.classList.add('warning');
+                    }
+                }
+
+                // Update word count
+                const wordCount = gameState.submittedWords.length;
+                const wordCountElement = document.getElementById('word-count');
+                if (wordCountElement) {
+                    wordCountElement.textContent = `${wordCount} word${wordCount !== 1 ? 's' : ''}`;
+                }
+
+                // Update stats
+                const wordsSubmittedElement = document.getElementById('words-submitted');
+                const validWordsElement = document.getElementById('valid-words');
+                if (wordsSubmittedElement) wordsSubmittedElement.textContent = wordCount;
+                if (validWordsElement) validWordsElement.textContent = gameState.validWordsCount;
+
+                // Update progress
+                const totalQuestions = 100;
+                const completedQuestions = (gameState.currentRound - 1) * 10 + (gameState.currentQuestion - 1);
+                const progress = Math.min((completedQuestions / totalQuestions) * 100, 100);
+
+                const progressFillElement = document.getElementById('progress-fill');
+                const progressPercentElement = document.getElementById('progress-percent');
+
+                if (progressFillElement) progressFillElement.style.width = `${progress}%`;
+                if (progressPercentElement) progressPercentElement.textContent = `${Math.round(progress)}%`;
+            } catch (error) {
+                console.error('Error updating game display:', error);
+            }
+        }
+
+        function startTimer() {
+            // Clear any existing timer
+            if (gameState.timerInterval) {
+                clearInterval(gameState.timerInterval);
+                gameState.timerInterval = null;
+            }
+
+            gameState.timerInterval = setInterval(() => {
+                if (!gameState.isPaused) {
+                    gameState.timer--;
+                    updateGameDisplay();
+
+                    if (gameState.timer <= 0) {
+                        clearInterval(gameState.timerInterval);
+                        gameState.timerInterval = null;
+
+                        // Auto-submit if word exists
+                        if (gameState.currentWord) {
+                            submitWord();
+                        }
+
+                        nextQuestion();
+
+                        // Reset timer for next question
+                        gameState.timer = gameState.timePerQuestion;
+                        startTimer();
+                    }
+                }
+            }, 1000);
+        }
+
+        function endGame() {
+            gameState.gameActive = false;
+            if (gameState.timerInterval) {
+                clearInterval(gameState.timerInterval);
+                gameState.timerInterval = null;
+            }
+
+            // Save user stats
+            saveUserStats();
+
+            // Show results page
+            showPage('results-page');
+        }
+
+        function saveUserStats() {
+            try {
+                const userStat = {
+                    username: gameState.username,
+                    difficulty: gameState.difficulty,
+                    timePerQuestion: gameState.timePerQuestion,
+                    roundsPlayed: gameState.currentRound - 1,
+                    questionsPlayed: (gameState.currentRound - 1) * 10 + (gameState.currentQuestion - 1),
+                    correctWords: gameState.validWordsCount,
+                    incorrectWords: gameState.submittedWords.length - gameState.validWordsCount,
+                    score: gameState.score,
+                    timestamp: new Date().toISOString()
+                };
+
+                // Get existing stats
+                const existingStats = JSON.parse(localStorage.getItem('ctw_stats') || '[]');
+
+                // Add new stat
+                existingStats.push(userStat);
+
+                // Save to localStorage (limit to last 100 games)
+                const limitedStats = existingStats.slice(-100);
+                localStorage.setItem('ctw_stats', JSON.stringify(limitedStats));
+            } catch (error) {
+                console.error('Error saving user stats:', error);
+            }
+        }
+
+        // ====== RESULTS PAGE ======
+        function loadGameResult() {
+            try {
+                // Get game stats from localStorage
+                const gameStats = JSON.parse(localStorage.getItem('ctw_stats') || '[]');
+
+                if (gameStats.length === 0) {
+                    // No results found, redirect to level selection
+                    showPage('level-page');
+                    return;
+                }
+
+                // Get the most recent result
+                const latestResult = gameStats[gameStats.length - 1];
+
+                // Calculate additional stats
+                const totalWords = latestResult.correctWords + latestResult.incorrectWords;
+                const accuracy = totalWords > 0 ? Math.round((latestResult.correctWords / totalWords) * 100) : 0;
+
+                // Determine performance message
+                let performanceMessage = 'Good effort!';
+                if (accuracy >= 90) {
+                    performanceMessage = 'Outstanding performance!';
+                } else if (accuracy >= 75) {
+                    performanceMessage = 'Excellent work!';
+                } else if (accuracy >= 60) {
+                    performanceMessage = 'Good job!';
+                } else if (accuracy >= 40) {
+                    performanceMessage = 'Nice try!';
+                } else {
+                    performanceMessage = 'Keep practicing!';
+                }
+
+                // Update the DOM with results
+                const finalScoreElement = document.getElementById('final-score');
+                const performanceMessageElement = document.getElementById('performance-message');
+                const validWordsCountElement = document.getElementById('valid-words-count');
+                const invalidWordsCountElement = document.getElementById('invalid-words-count');
+                const totalWordsCountElement = document.getElementById('total-words-count');
+                const roundsCompletedElement = document.getElementById('rounds-completed');
+                const accuracyPercentElement = document.getElementById('accuracy-percent');
+                const accuracyFillElement = document.getElementById('accuracy-fill');
+
+                if (finalScoreElement) finalScoreElement.textContent = latestResult.score;
+                if (performanceMessageElement) performanceMessageElement.textContent = performanceMessage;
+                if (validWordsCountElement) validWordsCountElement.textContent = latestResult.correctWords;
+                if (invalidWordsCountElement) invalidWordsCountElement.textContent = latestResult.incorrectWords;
+                if (totalWordsCountElement) totalWordsCountElement.textContent = totalWords;
+                if (roundsCompletedElement) roundsCompletedElement.textContent = latestResult.roundsPlayed;
+                if (accuracyPercentElement) accuracyPercentElement.textContent = `${accuracy}%`;
+                if (accuracyFillElement) accuracyFillElement.style.width = `${accuracy}%`;
+
+                const resultUsernameElement = document.getElementById('result-username');
+                const resultTimeElement = document.getElementById('result-time');
+                const resultDateElement = document.getElementById('result-date');
+                const resultLevelElement = document.getElementById('result-level');
+
+                if (resultUsernameElement) resultUsernameElement.textContent = latestResult.username;
+                if (resultTimeElement) resultTimeElement.textContent = `${latestResult.timePerQuestion}s`;
+
+                // Format date
+                const gameDate = new Date(latestResult.timestamp);
+                const formattedDate = gameDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                if (resultDateElement) resultDateElement.textContent = formattedDate;
+
+                // Set level badge
+                if (resultLevelElement) {
+                    resultLevelElement.textContent = latestResult.difficulty.charAt(0).toUpperCase() + latestResult.difficulty.slice(1);
+                    resultLevelElement.className = `level-badge level-${latestResult.difficulty}`;
+                }
+
+                // Animate the accuracy bar
+                setTimeout(() => {
+                    if (accuracyFillElement) {
+                        accuracyFillElement.style.transition = 'width 1.5s ease';
+                    }
+                }, 500);
+            } catch (error) {
+                console.error('Error loading game results:', error);
+            }
+        }
+
+        // ====== ADMIN PAGE ======
+        function checkAdminLoginStatus() {
+            try {
+                const isLoggedIn = localStorage.getItem('ctw_admin_loggedin') === 'true';
+                const loginSection = document.getElementById('login-section');
+                const adminPanel = document.getElementById('admin-panel');
+
+                if (isLoggedIn && adminPanel) {
+                    loginSection.style.display = 'none';
+                    adminPanel.style.display = 'block';
+                    loadAdminData();
+                } else if (loginSection) {
+                    loginSection.style.display = 'block';
+                    if (adminPanel) adminPanel.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error checking admin login:', error);
+            }
+        }
+
+        function login() {
+            try {
+                const usernameInput = document.getElementById('admin-username');
+                const passwordInput = document.getElementById('admin-password');
+
+                if (!usernameInput || !passwordInput) return;
+
+                const username = usernameInput.value;
+                const password = passwordInput.value;
+
+                if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                    // Successful login
+                    localStorage.setItem('ctw_admin_loggedin', 'true');
+                    checkAdminLoginStatus();
+                } else {
+                    alert('Invalid username or password');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Login error. Please try again.');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('ctw_admin_loggedin');
+            checkAdminLoginStatus();
+        }
+
+        function loadAdminData() {
+            try {
+                // Get game stats from localStorage
+                const gameStats = JSON.parse(localStorage.getItem('ctw_stats') || '[]');
+
+                const tableBody = document.getElementById('users-table-body');
+                if (!tableBody) return;
+
+                if (gameStats.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="8" class="no-data">No user data available</td></tr>';
+                    updateAdminSummaryStats(0, 0, 0, 0);
+                    return;
+                }
+
+                // Calculate summary statistics
+                const uniqueUsers = [...new Set(gameStats.map(stat => stat.username))].length;
+                const totalGames = gameStats.length;
+                const totalWords = gameStats.reduce((sum, stat) => sum + stat.correctWords + stat.incorrectWords, 0);
+                const avgScore = totalGames > 0 ? Math.round(gameStats.reduce((sum, stat) => sum + stat.score, 0) / totalGames) : 0;
+
+                // Update summary stats
+                updateAdminSummaryStats(uniqueUsers, totalGames, totalWords, avgScore);
+
+                // Populate table
+                tableBody.innerHTML = '';
+
+                // Sort by date (newest first)
+                const sortedStats = [...gameStats].sort((a, b) =>
+                    new Date(b.timestamp) - new Date(a.timestamp)
+                );
+
+                sortedStats.forEach(stat => {
+                    const row = document.createElement('tr');
+
+                    // Format date
+                    const gameDate = new Date(stat.timestamp);
+                    const formattedDate = gameDate.toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    // Level badge
+                    const levelClass = `level-${stat.difficulty}`;
+                    const levelBadge = `<span class="level-badge ${levelClass}">${stat.difficulty.charAt(0).toUpperCase() + stat.difficulty.slice(1)}</span>`;
+
+                    row.innerHTML = `
+                        <td>${stat.username}</td>
+                        <td>${levelBadge}</td>
+                        <td>${stat.timePerQuestion}s</td>
+                        <td>${stat.roundsPlayed}</td>
+                        <td>${stat.correctWords}</td>
+                        <td>${stat.incorrectWords}</td>
+                        <td><strong>${stat.score}</strong></td>
+                        <td>${formattedDate}</td>
+                    `;
+
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error loading admin data:', error);
+            }
+        }
+
+        function updateAdminSummaryStats(users, games, words, avgScore) {
+            const totalUsersElement = document.getElementById('total-users');
+            const totalGamesElement = document.getElementById('total-games');
+            const totalWordsElement = document.getElementById('total-words');
+            const avgScoreElement = document.getElementById('avg-score');
+
+            if (totalUsersElement) totalUsersElement.textContent = users;
+            if (totalGamesElement) totalGamesElement.textContent = games;
+            if (totalWordsElement) totalWordsElement.textContent = words;
+            if (avgScoreElement) avgScoreElement.textContent = avgScore;
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to delete ALL game data? This action cannot be undone.')) {
+                localStorage.removeItem('ctw_stats');
+                localStorage.removeItem('ctw_username');
+                localStorage.removeItem('ctw_level');
+                localStorage.removeItem('ctw_time');
+                localStorage.removeItem('ctw_admin_loggedin');
+
+                alert('All data has been cleared.');
+                loadAdminData();
+            }
+        }
+
+        function exportData() {
+            try {
+                const gameStats = JSON.parse(localStorage.getItem('ctw_stats') || '[]');
+
+                if (gameStats.length === 0) {
+                    alert('No data to export');
+                    return;
+                }
+
+                const dataStr = JSON.stringify(gameStats, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+                const exportFileDefaultName = 'create-the-words-data.json';
+
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                document.body.appendChild(linkElement);
+                linkElement.click();
+                document.body.removeChild(linkElement);
+            } catch (error) {
+                console.error('Export error:', error);
+                alert('Error exporting data');
+            }
+        }
+
+        // Set up admin event listeners
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const clearDataBtn = document.getElementById('clear-data-btn');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const exportBtn = document.getElementById('export-btn');
+        const adminPasswordInput = document.getElementById('admin-password');
+
+        if (loginBtn) loginBtn.addEventListener('click', login);
+        if (logoutBtn) logoutBtn.addEventListener('click', logout);
+        if (clearDataBtn) clearDataBtn.addEventListener('click', clearAllData);
+        if (refreshBtn) refreshBtn.addEventListener('click', () => loadAdminData());
+        if (exportBtn) exportBtn.addEventListener('click', exportData);
+        if (adminPasswordInput) {
+            adminPasswordInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    login();
+                }
+            });
+        }
+
+        // ====== RESPONSIVE JAVASCRIPT ======
+        // Handle window resize
+        let resizeTimeout;
+        window.addEventListener('resize', function () {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function () {
+                // Recalculate letter positions if on game page
+                if (document.getElementById('game-page')?.classList.contains('active')) {
+                    loadQuestion();
+                }
+            }, 250);
+        });
+
+        // Handle orientation change
+        window.addEventListener('orientationchange', function () {
+            setTimeout(function () {
+                if (document.getElementById('game-page')?.classList.contains('active')) {
+                    loadQuestion();
+                }
+            }, 300);
+        });
+
+        // Touch events for mobile
+        document.addEventListener('touchmove', function (e) {
+            if (e.target.classList.contains('letter-btn')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // ====== INITIALIZE APPLICATION ======
+        // Initialize with welcome page
+        window.addEventListener('DOMContentLoaded', function () {
+            // Make sure all pages are hidden except welcome
+            document.querySelectorAll('.page-container').forEach(page => {
+                if (page.id !== 'welcome-page') {
+                    page.classList.remove('active');
+                }
+            });
+            document.getElementById('welcome-page').classList.add('active');
+        });
+    </script>
+</body>
+
+</html>
